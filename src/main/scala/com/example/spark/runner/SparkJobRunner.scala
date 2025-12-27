@@ -37,7 +37,13 @@ object SparkJobRunner extends SparkSessionProvider {
     val enrichedContratsDS = com.example.spark.builder.ContratBuilder.build(spark, contratPath, personsDS)
     enrichedContratsDS.show()
 
-    // 5. Stop Spark
+    // 5. Build Guarantees
+    val guaranteePath = "src/main/resources/data/guarantees.csv"
+    println(s">>> Reading guarantees from $guaranteePath")
+    val guaranteesDS = com.example.spark.builder.GuaranteeBuilder.build(spark, guaranteePath)
+    guaranteesDS.show()
+
+    // 6. Stop Spark
     spark.stop()
     println(">>> Spark Job Finished.")
   }

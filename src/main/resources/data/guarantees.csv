@@ -1,0 +1,6 @@
+id,contractId,coverageAmount,guaranteeType
+201,101,500.0,Theft
+202,101,200.0,Breakage
+203,103,1000.0,Fire
+204,103,500.0,Water Damage
+205,104,300.0,Power Surge
