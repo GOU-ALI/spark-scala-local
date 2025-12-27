@@ -1,0 +1,6 @@
+id,personId,amount,contractType
+101,1,500.0,Insurance
+102,1,120.0,Mobile
+103,2,1000.0,Rent
+104,3,300.0,Energy
+105,5,50.0,Subscription

@@ -31,7 +31,13 @@ object SparkJobRunner extends SparkSessionProvider {
     val cityCountDS = PersonService.countByCity(personsDS)
     cityCountDS.show()
 
-    // 4. Stop Spark
+    // 4. Build Enriched Contracts (Join)
+    val contratPath = "src/main/resources/data/contrats.csv"
+    println(s">>> Reading contracts from $contratPath and joining with Persons")
+    val enrichedContratsDS = com.example.spark.builder.ContratBuilder.build(spark, contratPath, personsDS)
+    enrichedContratsDS.show()
+
+    // 5. Stop Spark
     spark.stop()
     println(">>> Spark Job Finished.")
   }
