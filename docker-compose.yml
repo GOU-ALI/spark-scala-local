@@ -1,0 +1,36 @@
+version: '2'
+
+services:
+  spark-master:
+    build:
+      context: .
+      dockerfile: deployment.Dockerfile
+    container_name: spark-master
+    command: /opt/spark/bin/spark-class org.apache.spark.deploy.master.Master
+    ports:
+      - '8090:8080' # Spark Master UI
+      - '7077:7077' # Spark Submit Port
+
+  spark-worker:
+    build:
+      context: .
+      dockerfile: deployment.Dockerfile
+    container_name: spark-worker
+    command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+    depends_on:
+      - spark-master
+
+  # This service builds our app and submits a job
+  platform-submit:
+    build:
+      context: .
+      dockerfile: deployment.Dockerfile
+    container_name: platform-submit
+    # Override CMD to submit job pointing to master
+    command: >
+      /bin/bash -c "echo 'Checking file...' && ls -l /app/resources/data/persons.csv && echo 'Submitting...' && /opt/spark/bin/spark-submit --verbose --class com.example.platform.app.PlatformApp --master spark://spark-master:7077 --deploy-mode client /app/app.jar      /app/resources/job_batch_docker.conf"
+    depends_on:
+      - spark-master
+      - spark-worker
+    environment:
+      - SPARK_MASTER=spark://spark-master:7077

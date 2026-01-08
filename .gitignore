@@ -14,3 +14,19 @@ target/
 
 # Logs
 *.log
+
+# Bloop/Metals
+.bsp/
+.metals/
+
+# Frontend
+ui/node_modules/
+ui/.next/
+ui/.DS_Store
+ui/.env*.local
+
+# VSCode
+.vscode/
+
+# Brain
+.gemini/
